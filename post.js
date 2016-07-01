@@ -49,14 +49,19 @@ var mceliece	= {
 		var publicKeyBuffer	= Module._malloc(mceliece.publicKeyLength);
 		var encryptedBuffer	= Module._malloc(mceliece.encryptedDataLength);
 
-		Module.writeArrayToMemory(new Uint32Array([message.length]), messageBuffer);
 		Module.writeArrayToMemory(message, messageBuffer + 4);
 		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
+
+		Module.writeArrayToMemory(
+			new Uint8Array(
+				new Uint32Array([message.length]).buffer
+			),
+			messageBuffer
+		);
 
 		try {
 			Module._mceliecejs_encrypt(
 				messageBuffer,
-				message.length,
 				publicKeyBuffer,
 				encryptedBuffer
 			);
