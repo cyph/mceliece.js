@@ -5,7 +5,7 @@
 The [McEliece](https://en.wikipedia.org/wiki/McEliece_cryptosystem) post-quantum asymmetric
 cipher compiled to pure JavaScript using [Emscripten](https://github.com/kripken/emscripten).
 The specific implementation in use is INRIA's [HyMES](https://www.rocq.inria.fr/secret/CBCrypto/index.php?pg=hymes).
-A simple wrapper is provided to make McEliece easy to use in Web applications.
+A simple wrapper is provided to make McEliece easy to use in web applications.
 
 The parameters are configured to slightly above 128-bit strength.
 

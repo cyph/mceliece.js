@@ -18,7 +18,7 @@ long mceliecejs_public_key_bytes () {
 	return PUBLICKEY_BYTES;
 }
 
-long mceliecejs_secret_key_bytes () {
+long mceliecejs_private_key_bytes () {
 	return SECRETKEY_BYTES;
 }
 

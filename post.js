@@ -19,7 +19,7 @@ Module._mceliecejs_init();
 
 var mceliece	= {
 	publicKeyLength: Module._mceliecejs_public_key_bytes(),
-	privateKeyLength: Module._mceliecejs_secret_key_bytes(),
+	privateKeyLength: Module._mceliecejs_private_key_bytes(),
 	encryptedDataLength: Module._mceliecejs_encrypted_bytes(),
 	decryptedDataLength: Module._mceliecejs_decrypted_bytes(),
 

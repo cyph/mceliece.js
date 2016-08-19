@@ -2902,14 +2902,14 @@ function getTempRet0() {
 function _randombytes_random() {
  var $0 = 0, label = 0, sp = 0;
  sp = STACKTOP;
- $0 = _emscripten_asm_const_0(0)|0; //@line 59 "libsodium/src/libsodium/randombytes/randombytes.c"
- return ($0|0); //@line 59 "libsodium/src/libsodium/randombytes/randombytes.c"
+ $0 = _emscripten_asm_const_0(0)|0; //@line 70 "libsodium/src/libsodium/randombytes/randombytes.c"
+ return ($0|0); //@line 70 "libsodium/src/libsodium/randombytes/randombytes.c"
 }
 function _randombytes_stir() {
  var label = 0, sp = 0;
  sp = STACKTOP;
- _emscripten_asm_const_0(1); //@line 73 "libsodium/src/libsodium/randombytes/randombytes.c"
- return; //@line 101 "libsodium/src/libsodium/randombytes/randombytes.c"
+ _emscripten_asm_const_0(1); //@line 85 "libsodium/src/libsodium/randombytes/randombytes.c"
+ return; //@line 113 "libsodium/src/libsodium/randombytes/randombytes.c"
 }
 function _randombytes_buf($buf,$size) {
  $buf = $buf|0;
@@ -2919,27 +2919,27 @@ function _randombytes_buf($buf,$size) {
  STACKTOP = STACKTOP + 16|0; if ((STACKTOP|0) >= (STACK_MAX|0)) abort();
  $0 = $buf;
  $1 = $size;
- $2 = $0; //@line 141 "libsodium/src/libsodium/randombytes/randombytes.c"
- $p = $2; //@line 141 "libsodium/src/libsodium/randombytes/randombytes.c"
- $i = 0; //@line 144 "libsodium/src/libsodium/randombytes/randombytes.c"
+ $2 = $0; //@line 151 "libsodium/src/libsodium/randombytes/randombytes.c"
+ $p = $2; //@line 151 "libsodium/src/libsodium/randombytes/randombytes.c"
+ $i = 0; //@line 154 "libsodium/src/libsodium/randombytes/randombytes.c"
  while(1) {
-  $3 = $i; //@line 144 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $4 = $1; //@line 144 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $5 = ($3>>>0)<($4>>>0); //@line 144 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $3 = $i; //@line 154 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $4 = $1; //@line 154 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $5 = ($3>>>0)<($4>>>0); //@line 154 "libsodium/src/libsodium/randombytes/randombytes.c"
   if (!($5)) {
    break;
   }
-  $6 = (_randombytes_random()|0); //@line 145 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $7 = $6&255; //@line 145 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $8 = $i; //@line 145 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $9 = $p; //@line 145 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $10 = (($9) + ($8)|0); //@line 145 "libsodium/src/libsodium/randombytes/randombytes.c"
-  HEAP8[$10>>0] = $7; //@line 145 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $11 = $i; //@line 144 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $12 = (($11) + 1)|0; //@line 144 "libsodium/src/libsodium/randombytes/randombytes.c"
-  $i = $12; //@line 144 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $6 = (_randombytes_random()|0); //@line 155 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $7 = $6&255; //@line 155 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $8 = $i; //@line 155 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $9 = $p; //@line 155 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $10 = (($9) + ($8)|0); //@line 155 "libsodium/src/libsodium/randombytes/randombytes.c"
+  HEAP8[$10>>0] = $7; //@line 155 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $11 = $i; //@line 154 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $12 = (($11) + 1)|0; //@line 154 "libsodium/src/libsodium/randombytes/randombytes.c"
+  $i = $12; //@line 154 "libsodium/src/libsodium/randombytes/randombytes.c"
  }
- STACKTOP = sp;return; //@line 148 "libsodium/src/libsodium/randombytes/randombytes.c"
+ STACKTOP = sp;return; //@line 158 "libsodium/src/libsodium/randombytes/randombytes.c"
 }
 function _l2($x) {
  $x = $x|0;
@@ -12702,7 +12702,7 @@ function _mceliecejs_public_key_bytes() {
  sp = STACKTOP;
  return 310592; //@line 18 "mceliece.c"
 }
-function _mceliecejs_secret_key_bytes() {
+function _mceliecejs_private_key_bytes() {
  var label = 0, sp = 0;
  sp = STACKTOP;
  return 392346; //@line 22 "mceliece.c"
@@ -20564,7 +20564,7 @@ var FUNCTION_TABLE_iiii = [b49,jsCall_iiii_0,jsCall_iiii_1,jsCall_iiii_2,jsCall_
 var FUNCTION_TABLE_vi = [b71,jsCall_vi_0,jsCall_vi_1,jsCall_vi_2,jsCall_vi_3,jsCall_vi_4,jsCall_vi_5,jsCall_vi_6,jsCall_vi_7,b72,b73,b74,b75,b76,b77,b78,b79,b80,_cleanup392,b81,b82,b83,b84,b85,b86,b87,b88,b89,b90
 ,b91,b92,b93];
 
-  return { _mceliecejs_init: _mceliecejs_init, _mceliecejs_encrypt: _mceliecejs_encrypt, _free: _free, _mceliecejs_decrypted_bytes: _mceliecejs_decrypted_bytes, _i64Add: _i64Add, _mceliecejs_keypair: _mceliecejs_keypair, _i64Subtract: _i64Subtract, _memset: _memset, _malloc: _malloc, _mceliecejs_public_key_bytes: _mceliecejs_public_key_bytes, _memcpy: _memcpy, _mceliecejs_secret_key_bytes: _mceliecejs_secret_key_bytes, _bitshift64Lshr: _bitshift64Lshr, _mceliecejs_encrypted_bytes: _mceliecejs_encrypted_bytes, _mceliecejs_decrypt: _mceliecejs_decrypt, _bitshift64Shl: _bitshift64Shl, runPostSets: runPostSets, stackAlloc: stackAlloc, stackSave: stackSave, stackRestore: stackRestore, establishStackSpace: establishStackSpace, setThrew: setThrew, setTempRet0: setTempRet0, getTempRet0: getTempRet0, dynCall_i: dynCall_i, dynCall_ii: dynCall_ii, dynCall_iiii: dynCall_iiii, dynCall_vi: dynCall_vi };
+  return { _mceliecejs_init: _mceliecejs_init, _mceliecejs_encrypt: _mceliecejs_encrypt, _free: _free, _mceliecejs_private_key_bytes: _mceliecejs_private_key_bytes, _mceliecejs_decrypted_bytes: _mceliecejs_decrypted_bytes, _i64Add: _i64Add, _mceliecejs_keypair: _mceliecejs_keypair, _i64Subtract: _i64Subtract, _memset: _memset, _malloc: _malloc, _mceliecejs_public_key_bytes: _mceliecejs_public_key_bytes, _memcpy: _memcpy, _bitshift64Lshr: _bitshift64Lshr, _mceliecejs_encrypted_bytes: _mceliecejs_encrypted_bytes, _mceliecejs_decrypt: _mceliecejs_decrypt, _bitshift64Shl: _bitshift64Shl, runPostSets: runPostSets, stackAlloc: stackAlloc, stackSave: stackSave, stackRestore: stackRestore, establishStackSpace: establishStackSpace, setThrew: setThrew, setTempRet0: setTempRet0, getTempRet0: getTempRet0, dynCall_i: dynCall_i, dynCall_ii: dynCall_ii, dynCall_iiii: dynCall_iiii, dynCall_vi: dynCall_vi };
 })
 // EMSCRIPTEN_END_ASM
 (Module.asmGlobalArg, Module.asmLibraryArg, buffer);
@@ -20584,6 +20584,12 @@ var real__free = asm["_free"]; asm["_free"] = function() {
 assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
 assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
 return real__free.apply(null, arguments);
+};
+
+var real__mceliecejs_private_key_bytes = asm["_mceliecejs_private_key_bytes"]; asm["_mceliecejs_private_key_bytes"] = function() {
+assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+return real__mceliecejs_private_key_bytes.apply(null, arguments);
 };
 
 var real__mceliecejs_public_key_bytes = asm["_mceliecejs_public_key_bytes"]; asm["_mceliecejs_public_key_bytes"] = function() {
@@ -20622,12 +20628,6 @@ assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it a
 return real__mceliecejs_decrypted_bytes.apply(null, arguments);
 };
 
-var real__mceliecejs_secret_key_bytes = asm["_mceliecejs_secret_key_bytes"]; asm["_mceliecejs_secret_key_bytes"] = function() {
-assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
-return real__mceliecejs_secret_key_bytes.apply(null, arguments);
-};
-
 var real__bitshift64Lshr = asm["_bitshift64Lshr"]; asm["_bitshift64Lshr"] = function() {
 assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
 assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
@@ -20655,6 +20655,7 @@ var _mceliecejs_init = Module["_mceliecejs_init"] = asm["_mceliecejs_init"];
 var _mceliecejs_encrypt = Module["_mceliecejs_encrypt"] = asm["_mceliecejs_encrypt"];
 var _free = Module["_free"] = asm["_free"];
 var runPostSets = Module["runPostSets"] = asm["runPostSets"];
+var _mceliecejs_private_key_bytes = Module["_mceliecejs_private_key_bytes"] = asm["_mceliecejs_private_key_bytes"];
 var _mceliecejs_public_key_bytes = Module["_mceliecejs_public_key_bytes"] = asm["_mceliecejs_public_key_bytes"];
 var _i64Add = Module["_i64Add"] = asm["_i64Add"];
 var _mceliecejs_keypair = Module["_mceliecejs_keypair"] = asm["_mceliecejs_keypair"];
@@ -20663,7 +20664,6 @@ var _memset = Module["_memset"] = asm["_memset"];
 var _malloc = Module["_malloc"] = asm["_malloc"];
 var _mceliecejs_decrypted_bytes = Module["_mceliecejs_decrypted_bytes"] = asm["_mceliecejs_decrypted_bytes"];
 var _memcpy = Module["_memcpy"] = asm["_memcpy"];
-var _mceliecejs_secret_key_bytes = Module["_mceliecejs_secret_key_bytes"] = asm["_mceliecejs_secret_key_bytes"];
 var _bitshift64Lshr = Module["_bitshift64Lshr"] = asm["_bitshift64Lshr"];
 var _mceliecejs_encrypted_bytes = Module["_mceliecejs_encrypted_bytes"] = asm["_mceliecejs_encrypted_bytes"];
 var _mceliecejs_decrypt = Module["_mceliecejs_decrypt"] = asm["_mceliecejs_decrypt"];
@@ -20928,7 +20928,7 @@ Module._mceliecejs_init();
 
 var mceliece	= {
 	publicKeyLength: Module._mceliecejs_public_key_bytes(),
-	privateKeyLength: Module._mceliecejs_secret_key_bytes(),
+	privateKeyLength: Module._mceliecejs_private_key_bytes(),
 	encryptedDataLength: Module._mceliecejs_encrypted_bytes(),
 	decryptedDataLength: Module._mceliecejs_decrypted_bytes(),
 

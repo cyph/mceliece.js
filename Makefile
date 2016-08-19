@@ -33,7 +33,7 @@ all:
 				'"'"'_mceliecejs_encrypt'"'"', \
 				'"'"'_mceliecejs_decrypt'"'"', \
 				'"'"'_mceliecejs_public_key_bytes'"'"', \
-				'"'"'_mceliecejs_secret_key_bytes'"'"', \
+				'"'"'_mceliecejs_private_key_bytes'"'"', \
 				'"'"'_mceliecejs_encrypted_bytes'"'"', \
 				'"'"'_mceliecejs_decrypted_bytes'"'"' \
 			]\" \
