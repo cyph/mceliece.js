@@ -11,11 +11,21 @@ The parameters are configured to slightly above 128-bit strength.
 
 ## Example Usage
 
-	var keyPair		= mceliece.keyPair();
-	var plaintext	= new Uint8Array([104, 101, 108, 108, 111, 0]); // "hello"
+	const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
+		mceliece.keyPair()
+	;
 
-	var encrypted	= mceliece.encrypt(plaintext, keyPair.publicKey);
-	var decrypted	= mceliece.decrypt(encrypted, keyPair.privateKey); // same as plaintext
+	const plaintext /*: Uint8Array */ =
+		new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
+	;
+
+	const encrypted /*: Uint8Array */ =
+		mceliece.encrypt(plaintext, keyPair.publicKey)
+	;
+
+	const decrypted /*: Uint8Array */ =
+		mceliece.decrypt(encrypted, keyPair.privateKey) // same as plaintext
+	;
 
 Note: McEliece generally shouldn't be used to directly encrypt your data; in most cases, you'll
 want to pair it with a symmetric cipher and use it to encrypt symmetric keys.
