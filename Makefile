@@ -9,15 +9,14 @@ all:
 	tar xzf HyMES.tar.gz
 	rm HyMES.tar.gz
 	sed -i 's|__inline ||g' HyMES/keypair.c
-	sed -i 's|l2|precomp_l2|g' HyMES/precomp.c
-	sed -i 's|is_leaf|precomp_is_leaf|g' HyMES/precomp.c
+	rm HyMES/precomp.c
 
 	cp config/* HyMES/
 
 	bash -c ' \
 		args="$$(echo " \
 			--memory-init-file 0 \
-			-s TOTAL_MEMORY=104900000 -s TOTAL_STACK=52443072 \
+			-s TOTAL_MEMORY=4194304 -s TOTAL_STACK=2097152 \
 			-s NO_DYNAMIC_EXECUTION=1 -s RUNNING_JS_OPTS=1 -s ASSERTIONS=0 \
 			-s AGGRESSIVE_VARIABLE_ELIMINATION=1 -s ALIASING_FUNCTION_POINTERS=1 \
 			-s FUNCTION_POINTER_ALIGNMENT=1 -s DISABLE_EXCEPTION_CATCHING=1 \
