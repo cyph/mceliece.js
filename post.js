@@ -17,15 +17,23 @@ function dataFree (buffer) {
 Module._mceliecejs_init();
 
 
+var decryptedBytes	= Module._mceliecejs_decrypted_bytes();
+
 var mceliece	= {
+	publicKeyBytes: Module._mceliecejs_public_key_bytes(),
+	privateKeyBytes: Module._mceliecejs_private_key_bytes(),
+	cyphertextBytes: Module._mceliecejs_encrypted_bytes(),
+	plaintextBytes: Module._mceliecejs_message_bytes(),
+
+	/* Backwards compatibility */
 	publicKeyLength: Module._mceliecejs_public_key_bytes(),
 	privateKeyLength: Module._mceliecejs_private_key_bytes(),
 	encryptedDataLength: Module._mceliecejs_encrypted_bytes(),
-	decryptedDataLength: Module._mceliecejs_decrypted_bytes(),
+	decryptedDataLength: Module._mceliecejs_message_bytes(),
 
 	keyPair: function () {
-		var publicKeyBuffer		= Module._malloc(mceliece.publicKeyLength);
-		var privateKeyBuffer	= Module._malloc(mceliece.privateKeyLength);
+		var publicKeyBuffer		= Module._malloc(mceliece.publicKeyBytes);
+		var privateKeyBuffer	= Module._malloc(mceliece.privateKeyBytes);
 
 		try {
 			Module._mceliecejs_keypair(
@@ -34,8 +42,8 @@ var mceliece	= {
 			);
 
 			return {
-				publicKey: dataResult(publicKeyBuffer, mceliece.publicKeyLength),
-				privateKey: dataResult(privateKeyBuffer, mceliece.privateKeyLength)
+				publicKey: dataResult(publicKeyBuffer, mceliece.publicKeyBytes),
+				privateKey: dataResult(privateKeyBuffer, mceliece.privateKeyBytes)
 			};
 		}
 		finally {
@@ -46,8 +54,8 @@ var mceliece	= {
 
 	encrypt: function (message, publicKey) {
 		var messageBuffer	= Module._malloc(message.length + 4);
-		var publicKeyBuffer	= Module._malloc(mceliece.publicKeyLength);
-		var encryptedBuffer	= Module._malloc(mceliece.encryptedDataLength);
+		var publicKeyBuffer	= Module._malloc(mceliece.publicKeyBytes);
+		var encryptedBuffer	= Module._malloc(mceliece.cyphertextBytes);
 
 		Module.writeArrayToMemory(message, messageBuffer + 4);
 		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
@@ -66,7 +74,7 @@ var mceliece	= {
 				encryptedBuffer
 			);
 
-			return dataResult(encryptedBuffer, mceliece.encryptedDataLength);
+			return dataResult(encryptedBuffer, mceliece.cyphertextBytes);
 		}
 		finally {
 			dataFree(messageBuffer);
@@ -76,9 +84,9 @@ var mceliece	= {
 	},
 
 	decrypt: function (encrypted, privateKey) {
-		var encryptedBuffer		= Module._malloc(mceliece.encryptedDataLength);
-		var privateKeyBuffer	= Module._malloc(mceliece.privateKeyLength);
-		var decryptedBuffer		= Module._malloc(mceliece.decryptedDataLength);
+		var encryptedBuffer		= Module._malloc(mceliece.cyphertextBytes);
+		var privateKeyBuffer	= Module._malloc(mceliece.privateKeyBytes);
+		var decryptedBuffer		= Module._malloc(decryptedBytes);
 
 		Module.writeArrayToMemory(encrypted, encryptedBuffer);
 		Module.writeArrayToMemory(privateKey, privateKeyBuffer);
@@ -113,4 +121,11 @@ return mceliece;
 
 }());
 
-self.mceliece	= mceliece;
+
+if (typeof module !== 'undefined' && module.exports) {
+	mceliece.mceliece	= mceliece;
+	module.exports		= mceliece;
+}
+else {
+	self.mceliece		= mceliece;
+}

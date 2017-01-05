@@ -30,6 +30,10 @@ long mceliecejs_decrypted_bytes () {
 	return CLEARTEXT_BYTES;
 }
 
+long mceliecejs_message_bytes () {
+	return MESSAGE_BYTES - 5;
+}
+
 void mceliecejs_keypair (
 	uint8_t* public_key,
 	uint8_t* private_key
