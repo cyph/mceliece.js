@@ -1,9 +1,13 @@
 all:
-	rm -rf dist HyMES libsodium 2> /dev/null
+	rm -rf dist HyMES libsodium sodiumutil pre.tmp.js 2> /dev/null
 	mkdir dist
 
 	git clone -b stable https://github.com/jedisct1/libsodium.git
-	cd libsodium ; emconfigure ./configure --enable-minimal --disable-shared 
+	cd libsodium ; emconfigure ./configure --enable-minimal --disable-shared
+
+	git clone https://github.com/cyph/sodiumutil.git
+	cp pre.js pre.tmp.js
+	cat sodiumutil/dist/sodiumutil.js | perl -pe 's/if\(typeof module!=="undefined".*//g' >> pre.tmp.js
 
 	wget https://www.rocq.inria.fr/secret/MCE/HyMES.tar.gz
 	tar xzf HyMES.tar.gz
@@ -37,7 +41,7 @@ all:
 				'"'"'_mceliecejs_decrypted_bytes'"'"', \
 				'"'"'_mceliecejs_message_bytes'"'"' \
 			]\" \
-			--pre-js pre.js --post-js post.js \
+			--pre-js pre.tmp.js --post-js post.js \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
 		bash -c "emcc -O3 $$args -o dist/mceliece.js"; \
@@ -46,7 +50,7 @@ all:
 
 	sed -i 's|require(|eval("require")(|g' dist/mceliece.js
 
-	rm -rf HyMES libsodium
+	rm -rf HyMES libsodium sodiumutil pre.tmp.js
 
 clean:
-	rm -rf dist HyMES libsodium
+	rm -rf dist HyMES libsodium sodiumutil pre.tmp.js

@@ -112,6 +112,16 @@ var mceliece	= {
 			dataFree(privateKeyBuffer);
 			dataFree(decryptedBuffer);
 		}
+	},
+
+	/** For compatibility with narruc/node-mceliece. */
+	stringToUTF8Array: function (s) {
+		return Array.prototype.slice.apply(sodiumUtil.from_string(s));
+	},
+
+	/** For compatibility with narruc/node-mceliece. */
+	UTF8ArraytoString: function (a) {
+		return sodiumUtil.to_string(new Uint8Array(a));
 	}
 };
 
