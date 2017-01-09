@@ -29,3 +29,7 @@ The parameters are configured to slightly above 128-bit strength.
 
 Note: McEliece generally shouldn't be used to directly encrypt your data; in most cases, you'll
 want to pair it with a symmetric cipher and use it to encrypt symmetric keys.
+
+## Credits
+
+Thanks to [Shane Curran](https://github.com/narruc) for donating the npm package name!
