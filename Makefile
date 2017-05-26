@@ -2,10 +2,10 @@ all:
 	rm -rf dist HyMES libsodium sodiumutil pre.tmp.js 2> /dev/null
 	mkdir dist
 
-	git clone -b stable https://github.com/jedisct1/libsodium.git
+	git clone --depth 1 -b stable https://github.com/jedisct1/libsodium
 	cd libsodium ; emconfigure ./configure --enable-minimal --disable-shared
 
-	git clone https://github.com/cyph/sodiumutil.git
+	git clone --depth 1 https://github.com/cyph/sodiumutil
 	cp pre.js pre.tmp.js
 	cat sodiumutil/dist/sodiumutil.js | perl -pe 's/if\(typeof module!=="undefined".*//g' >> pre.tmp.js
 
