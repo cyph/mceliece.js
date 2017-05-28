@@ -25,12 +25,6 @@ var mceliece	= {
 	cyphertextBytes: Module._mceliecejs_encrypted_bytes(),
 	plaintextBytes: Module._mceliecejs_message_bytes(),
 
-	/* Backwards compatibility */
-	publicKeyLength: Module._mceliecejs_public_key_bytes(),
-	privateKeyLength: Module._mceliecejs_private_key_bytes(),
-	encryptedDataLength: Module._mceliecejs_encrypted_bytes(),
-	decryptedDataLength: Module._mceliecejs_message_bytes(),
-
 	keyPair: function () {
 		var publicKeyBuffer		= Module._malloc(mceliece.publicKeyBytes);
 		var privateKeyBuffer	= Module._malloc(mceliece.privateKeyBytes);
@@ -112,16 +106,6 @@ var mceliece	= {
 			dataFree(privateKeyBuffer);
 			dataFree(decryptedBuffer);
 		}
-	},
-
-	/** For compatibility with narruc/node-mceliece. */
-	stringToUTF8Array: function (s) {
-		return Array.prototype.slice.apply(sodiumUtil.from_string(s));
-	},
-
-	/** For compatibility with narruc/node-mceliece. */
-	UTF8ArraytoString: function (a) {
-		return sodiumUtil.to_string(new Uint8Array(a));
 	}
 };
 
