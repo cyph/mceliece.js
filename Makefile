@@ -1,13 +1,14 @@
 all:
-	rm -rf dist libsodium mcbits sodiumutil pre.tmp.js 2> /dev/null
+	rm -rf dist libsodium mcbits sodiumutil 2> /dev/null
 	mkdir dist
 
 	git clone --depth 1 -b stable https://github.com/jedisct1/libsodium
 	cd libsodium ; emconfigure ./configure --enable-minimal --disable-shared
 
 	git clone --depth 1 https://github.com/cyph/sodiumutil
-	cp pre.js pre.tmp.js
-	cat sodiumutil/dist/sodiumutil.js | perl -pe 's/if\(typeof module!=="undefined".*//g' >> pre.tmp.js
+	cp pre.js dist/mceliece.tmp.js
+	cat sodiumutil/dist/sodiumutil.js | \
+		perl -pe 's/if\(typeof module!=="undefined".*//g' >> dist/mceliece.tmp.js
 
 	wget https://www.win.tue.nl/~tchou/code/mcbits_new.tar.gz
 	tar xzf mcbits_new.tar.gz
@@ -25,10 +26,10 @@ all:
 
 	bash -c ' \
 		args="$$(echo " \
-			--memory-init-file 0 \
+			-s SINGLE_FILE=1 \
 			-DCYPHERTEXT_LEN=512 \
 			-s TOTAL_MEMORY=16777216 -s TOTAL_STACK=8388608 \
-			-s NO_DYNAMIC_EXECUTION=1 -s RUNNING_JS_OPTS=1 -s ASSERTIONS=0 \
+			-s NO_DYNAMIC_EXECUTION=1 -s ASSERTIONS=0 \
 			-s AGGRESSIVE_VARIABLE_ELIMINATION=1 -s ALIASING_FUNCTION_POINTERS=1 \
 			-s FUNCTION_POINTER_ALIGNMENT=1 -s DISABLE_EXCEPTION_CATCHING=1 \
 			-s RESERVED_FUNCTION_POINTERS=8 -s NO_FILESYSTEM=1 \
@@ -53,16 +54,43 @@ all:
 				'"'"'_mceliecejs_encrypted_bytes'"'"', \
 				'"'"'_mceliecejs_decrypted_bytes'"'"' \
 			]\" \
-			--pre-js pre.tmp.js --post-js post.js \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
-		bash -c "emcc -O3 $$args -o dist/mceliece.js"; \
-		bash -c "emcc -O0 -g4 $$args -s DISABLE_EXCEPTION_CATCHING=0 -s ASSERTIONS=2 -o dist/mceliece.debug.js"; \
+		bash -c "emcc -Oz -s RUNNING_JS_OPTS=1 -s NO_EXIT_RUNTIME=1 $$args -o dist/mceliece.asm.js"; \
+		bash -c "emcc -O3 -s WASM=1 $$args -o dist/mceliece.wasm.js"; \
 	'
 
+	echo " \
+		var moduleReady; \
+		if (typeof WebAssembly !== 'undefined') { \
+	" >> dist/mceliece.tmp.js
+	cat dist/mceliece.wasm.js >> dist/mceliece.tmp.js
+	echo " \
+			moduleReady = new Promise(function (resolve) { \
+				var interval = setInterval(function () { \
+					if (!Module.usingWasm) { \
+						return; \
+					} \
+					clearInterval(interval); \
+					resolve(); \
+				}, 50); \
+			});\
+		} \
+		else { \
+	" >> dist/mceliece.tmp.js
+	cat dist/mceliece.asm.js >> dist/mceliece.tmp.js
+	echo " \
+			moduleReady = Promise.resolve(); \
+		} \
+	" >> dist/mceliece.tmp.js
+	cat post.js >> dist/mceliece.tmp.js
+
+	uglifyjs dist/mceliece.tmp.js -cmo dist/mceliece.js
+
+	sed -i 's|use asm||g' dist/mceliece.js
 	sed -i 's|require(|eval("require")(|g' dist/mceliece.js
 
-	rm -rf libsodium mcbits sodiumutil pre.tmp.js
+	rm -rf libsodium mcbits sodiumutil dist/mceliece.*.js
 
 clean:
-	rm -rf dist libsodium mcbits sodiumutil pre.tmp.js
+	rm -rf dist libsodium mcbits sodiumutil

@@ -23,18 +23,27 @@ function dataFree (buffer) {
 }
 
 
-Module._mceliecejs_init();
+var publicKeyBytes, privateKeyBytes, cyphertextBytes, plaintextBytes;
+
+var initiated	= moduleReady.then(function () {
+	Module._mceliecejs_init();
+
+	publicKeyBytes	= Module._mceliecejs_public_key_bytes();
+	privateKeyBytes	= Module._mceliecejs_private_key_bytes();
+	cyphertextBytes	= Module._mceliecejs_encrypted_bytes();
+	plaintextBytes	= Module._mceliecejs_decrypted_bytes();
+});
 
 
 var mceliece	= {
-	publicKeyBytes: Module._mceliecejs_public_key_bytes(),
-	privateKeyBytes: Module._mceliecejs_private_key_bytes(),
-	cyphertextBytes: Module._mceliecejs_encrypted_bytes(),
-	plaintextBytes: Module._mceliecejs_decrypted_bytes(),
+	publicKeyBytes: initiated.then(function () { return publicKeyBytes; }),
+	privateKeyBytes: initiated.then(function () { return privateKeyBytes; }),
+	cyphertextBytes: initiated.then(function () { return cyphertextBytes; }),
+	plaintextBytes: initiated.then(function () { return plaintextBytes; }),
 
-	keyPair: function () {
-		var publicKeyBuffer		= Module._malloc(mceliece.publicKeyBytes);
-		var privateKeyBuffer	= Module._malloc(mceliece.privateKeyBytes);
+	keyPair: function () { return initiated.then(function () {
+		var publicKeyBuffer		= Module._malloc(publicKeyBytes);
+		var privateKeyBuffer	= Module._malloc(privateKeyBytes);
 
 		try {
 			var returnValue	= Module._mceliecejs_keypair(
@@ -43,24 +52,24 @@ var mceliece	= {
 			);
 
 			return dataReturn(returnValue, {
-				publicKey: dataResult(publicKeyBuffer, mceliece.publicKeyBytes),
-				privateKey: dataResult(privateKeyBuffer, mceliece.privateKeyBytes)
+				publicKey: dataResult(publicKeyBuffer, publicKeyBytes),
+				privateKey: dataResult(privateKeyBuffer, privateKeyBytes)
 			});
 		}
 		finally {
 			dataFree(publicKeyBuffer);
 			dataFree(privateKeyBuffer);
 		}
-	},
+	}); },
 
-	encrypt: function (message, publicKey) {
-		if (message.length > mceliece.plaintextBytes) {
+	encrypt: function (message, publicKey) { return initiated.then(function () {
+		if (message.length > plaintextBytes) {
 			throw new Error('Plaintext length exceeds mceliece.plaintextBytes.');
 		}
 
 		var messageBuffer	= Module._malloc(message.length);
-		var publicKeyBuffer	= Module._malloc(mceliece.publicKeyBytes);
-		var encryptedBuffer	= Module._malloc(mceliece.cyphertextBytes);
+		var publicKeyBuffer	= Module._malloc(publicKeyBytes);
+		var encryptedBuffer	= Module._malloc(cyphertextBytes);
 
 		Module.writeArrayToMemory(message, messageBuffer);
 		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
@@ -75,7 +84,7 @@ var mceliece	= {
 
 			return dataReturn(
 				returnValue,
-				dataResult(encryptedBuffer, mceliece.cyphertextBytes)
+				dataResult(encryptedBuffer, cyphertextBytes)
 			);
 		}
 		finally {
@@ -83,12 +92,12 @@ var mceliece	= {
 			dataFree(publicKeyBuffer);
 			dataFree(encryptedBuffer);
 		}
-	},
+	}); },
 
-	decrypt: function (encrypted, privateKey) {
-		var encryptedBuffer		= Module._malloc(mceliece.cyphertextBytes);
-		var privateKeyBuffer	= Module._malloc(mceliece.privateKeyBytes);
-		var decryptedBuffer		= Module._malloc(mceliece.plaintextBytes);
+	decrypt: function (encrypted, privateKey) { return initiated.then(function () {
+		var encryptedBuffer		= Module._malloc(cyphertextBytes);
+		var privateKeyBuffer	= Module._malloc(privateKeyBytes);
+		var decryptedBuffer		= Module._malloc(plaintextBytes);
 
 		Module.writeArrayToMemory(encrypted, encryptedBuffer);
 		Module.writeArrayToMemory(privateKey, privateKeyBuffer);
@@ -112,7 +121,7 @@ var mceliece	= {
 			dataFree(privateKeyBuffer);
 			dataFree(decryptedBuffer);
 		}
-	}
+	}); }
 };
 
 
