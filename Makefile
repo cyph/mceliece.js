@@ -61,27 +61,20 @@ all:
 	'
 
 	echo " \
-		var moduleReady; \
-		if (typeof WebAssembly !== 'undefined') { \
+		var finalModule; \
+		var moduleReady = Promise.resolve().then(function () { \
 	" >> dist/mceliece.tmp.js
 	cat dist/mceliece.wasm.js >> dist/mceliece.tmp.js
 	echo " \
-			moduleReady = new Promise(function (resolve) { \
-				var interval = setInterval(function () { \
-					if (!Module.usingWasm) { \
-						return; \
-					} \
-					clearInterval(interval); \
-					resolve(); \
-				}, 50); \
+			return Module['wasmReady'].then(function () { \
+				finalModule = Module; \
 			});\
-		} \
-		else { \
+		}).catch(function () { \
 	" >> dist/mceliece.tmp.js
 	cat dist/mceliece.asm.js >> dist/mceliece.tmp.js
 	echo " \
-			moduleReady = Promise.resolve(); \
-		} \
+			finalModule = Module; \
+		}); \
 	" >> dist/mceliece.tmp.js
 	cat post.js >> dist/mceliece.tmp.js
 
