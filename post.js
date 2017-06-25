@@ -130,7 +130,7 @@ var mceliece	= {
 
 return mceliece;
 
-}());
+}()); }());
 
 
 if (typeof module !== 'undefined' && module.exports) {
