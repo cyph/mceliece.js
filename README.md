@@ -9,9 +9,6 @@ A simple JavaScript wrapper is provided to make McEliece easy to use in web appl
 The parameters are configured to slightly above 128-bit strength.
 
 The underlying cipher implementation in use is [McBits](https://www.win.tue.nl/~tchou/mcbits).
-This is a breaking change in 2.0.0, as 1.x used
-[HyMES](https://www.rocq.inria.fr/secret/CBCrypto/index.php?pg=hymes).
-
 
 ## Example Usage
 
@@ -40,6 +37,21 @@ This is a breaking change in 2.0.0, as 1.x used
 
 Note: McEliece generally shouldn't be used to directly encrypt your data; in most cases, you'll
 want to pair it with a symmetric cipher and use it to encrypt symmetric keys.
+
+## Changelog
+
+Breaking changes in major versions:
+
+3.0.0:
+
+* As part of upgrading from asm.js to WebAssembly (with asm.js included as a fallback),
+the API is fully asynchronous.
+
+2.0.0:
+
+* Switched to McBits from [HyMES](https://www.rocq.inria.fr/secret/CBCrypto/index.php?pg=hymes).
+
+* Removed some undocumented functions as part of minor API cleanup.
 
 ## Credits
 
