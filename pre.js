@@ -7,7 +7,7 @@ var mobileChromeVersion	= typeof navigator === 'undefined' || /Edge/.test(naviga
 	parseInt((navigator.userAgent.match(/Chrome\/(\d+).*Mobile/) || [])[1], 10)
 ;
 
-var GlobalWebAssembly	= WebAssembly;
+var GlobalWebAssembly	= typeof WebAssembly === 'undefined' ? undefined : WebAssembly;
 
 return (function () {
 
