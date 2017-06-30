@@ -11,4 +11,4 @@ var GlobalWebAssembly	= typeof WebAssembly === 'undefined' ? undefined : WebAsse
 
 return (function () {
 
-var WebAssembly			= isNaN(mobileChromeVersion) ? GlobalWebAssembly : undefined;
+var WebAssembly			= mobileChromeVersion !== 58 ? GlobalWebAssembly : undefined;

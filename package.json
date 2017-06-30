@@ -1,6 +1,6 @@
 {
 	"name": "mceliece",
-	"version": "3.0.4",
+	"version": "3.0.5",
 	"description": "JavaScript wrapper for a WebAssembly build of McEliece",
 	"main": "dist/mceliece.js",
 	"types": "./mceliece.d.ts",
