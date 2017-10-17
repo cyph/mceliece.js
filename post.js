@@ -23,11 +23,9 @@ function dataFree (buffer) {
 }
 
 
-var Module, publicKeyBytes, privateKeyBytes, cyphertextBytes, plaintextBytes;
+var publicKeyBytes, privateKeyBytes, cyphertextBytes, plaintextBytes;
 
-var initiated	= moduleReady.then(function () {
-	Module	= finalModule;
-
+var initiated	= Module.ready.then(function () {
 	Module._mceliecejs_init();
 
 	publicKeyBytes	= Module._mceliecejs_public_key_bytes();

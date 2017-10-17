@@ -61,19 +61,22 @@ all:
 	'
 
 	echo " \
-		var finalModule; \
-		var moduleReady = Promise.resolve().then(function () { \
+		var Module = {}; \
+		var _Module = Module; \
+		Module.ready = new Promise(function (resolve, reject) { \
+			var Module = _Module; \
+			Module.onAbort = reject; \
+			Module.onRuntimeInitialized = resolve; \
 	" >> dist/mceliece.tmp.js
 	cat dist/mceliece.wasm.js >> dist/mceliece.tmp.js
 	echo " \
-			return Module['wasmReady'].then(function () { \
-				finalModule = Module; \
-			});\
 		}).catch(function () { \
+			var Module = _Module; \
+			Module.onAbort = undefined; \
+			Module.onRuntimeInitialized = undefined; \
 	" >> dist/mceliece.tmp.js
 	cat dist/mceliece.asm.js >> dist/mceliece.tmp.js
 	echo " \
-			finalModule = Module; \
 		}); \
 	" >> dist/mceliece.tmp.js
 	cat post.js >> dist/mceliece.tmp.js
