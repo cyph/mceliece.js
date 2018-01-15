@@ -45,6 +45,8 @@ all:
 			$$(ls mcbits/*.c) \
 			mceliece.c \
 			-s EXPORTED_FUNCTIONS=\"[ \
+				'"'"'_free'"'"', \
+				'"'"'_malloc'"'"', \
 				'"'"'_mceliecejs_init'"'"', \
 				'"'"'_mceliecejs_keypair'"'"', \
 				'"'"'_mceliecejs_encrypt'"'"', \
