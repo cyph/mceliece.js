@@ -45,6 +45,9 @@ all:
 			$$(find libsodium/src/libsodium/crypto_verify -type f -name "*.c" | tr "\n" " ") \
 			$$(ls mcbits/*.c) \
 			mceliece.c \
+			-s EXTRA_EXPORTED_RUNTIME_METHODS=\"[ \
+				'"'"'writeArrayToMemory'"'"' \
+			]\" \
 			-s EXPORTED_FUNCTIONS=\"[ \
 				'"'"'_free'"'"', \
 				'"'"'_malloc'"'"', \
