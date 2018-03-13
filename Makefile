@@ -72,7 +72,15 @@ all:
 		Module.ready = new Promise(function (resolve, reject) { \
 			var Module = _Module; \
 			Module.onAbort = reject; \
-			Module.onRuntimeInitialized = resolve; \
+			Module.onRuntimeInitialized = function () { \
+				try { \
+					Module._mceliecejs_public_key_bytes(); \
+					resolve(); \
+				} \
+				catch (err) { \
+					reject(err); \
+				} \
+			}; \
 	" >> dist/mceliece.tmp.js
 	cat dist/mceliece.wasm.js >> dist/mceliece.tmp.js
 	echo " \
