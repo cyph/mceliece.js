@@ -23,16 +23,6 @@ long mceliecejs_decrypted_bytes () {
 	return CYPHERTEXT_LEN - CRYPTO_BYTES;
 }
 
-long mceliecejs_get_cyphertext_len (uint8_t cyphertext[]) {
-	for (long i = CYPHERTEXT_LEN ; i > 0 ; --i) {
-		if (cyphertext[i - 1] != 0) {
-			return i;
-		}
-	}
-
-	return 0;
-}
-
 long mceliecejs_keypair (
 	uint8_t* public_key,
 	uint8_t* private_key
@@ -52,13 +42,9 @@ long mceliecejs_encrypt (
 		cyphertext,
 		&cyphertext_len,
 		message,
-		message_len,
+		mceliecejs_decrypted_bytes(),
 		public_key
 	);
-
-	for (long i = cyphertext_len ; i < CYPHERTEXT_LEN ; ++i) {
-		cyphertext[i]	= 0;
-	}
 
 	return status;
 }
@@ -74,14 +60,9 @@ long mceliecejs_decrypt (
 		decrypted,
 		&decrypted_len,
 		cyphertext,
-		mceliecejs_get_cyphertext_len(cyphertext),
+		CYPHERTEXT_LEN,
 		private_key
 	);
 
-	if (status == 0) {
-		return decrypted_len;
-	}
-	else {
-		return -status;
-	}
+	return status;
 }

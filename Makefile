@@ -49,6 +49,7 @@ all:
 				'"'"'writeArrayToMemory'"'"' \
 			]\" \
 			-s EXPORTED_FUNCTIONS=\"[ \
+				'"'"'_calloc'"'"', \
 				'"'"'_free'"'"', \
 				'"'"'_malloc'"'"', \
 				'"'"'_mceliecejs_init'"'"', \

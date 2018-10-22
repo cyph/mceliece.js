@@ -41,7 +41,7 @@ var mceliece	= {
 	publicKeyBytes: initiated.then(function () { return publicKeyBytes; }),
 	privateKeyBytes: initiated.then(function () { return privateKeyBytes; }),
 	cyphertextBytes: initiated.then(function () { return cyphertextBytes; }),
-	plaintextBytes: initiated.then(function () { return plaintextBytes; }),
+	plaintextBytes: initiated.then(function () { return plaintextBytes - 2; }),
 
 	keyPair: function () { return initiated.then(function () {
 		var publicKeyBuffer		= Module._malloc(publicKeyBytes);
@@ -65,15 +65,19 @@ var mceliece	= {
 	}); },
 
 	encrypt: function (message, publicKey) { return initiated.then(function () {
-		if (message.length > plaintextBytes) {
+		if (message.length > (plaintextBytes - 2)) {
 			throw new Error('Plaintext length exceeds mceliece.plaintextBytes.');
 		}
 
-		var messageBuffer	= Module._malloc(message.length);
+		var messageBuffer	= Module._calloc(plaintextBytes, 1);
 		var publicKeyBuffer	= Module._malloc(publicKeyBytes);
 		var encryptedBuffer	= Module._malloc(cyphertextBytes);
 
-		Module.writeArrayToMemory(message, messageBuffer);
+		Module.writeArrayToMemory(
+			new Uint8Array(new Uint16Array([message.length]).buffer),
+			messageBuffer
+		);
+		Module.writeArrayToMemory(message, messageBuffer + 2);
 		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
 
 		try {
@@ -111,12 +115,13 @@ var mceliece	= {
 				decryptedBuffer
 			);
 
-			if (returnValue >= 0) {
-				return dataResult(decryptedBuffer, returnValue);
-			}
-			else {
-				dataReturn(-returnValue);
-			}
+			return dataReturn(
+				returnValue,
+				dataResult(
+					decryptedBuffer + 2,
+					new Uint16Array(dataResult(decryptedBuffer, 2).buffer)[0]
+				)
+			);
 		}
 		finally {
 			dataFree(encryptedBuffer);
