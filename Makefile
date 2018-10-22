@@ -18,6 +18,7 @@ all:
 	sed -i 's|crypto_encrypt_mcbits|crypto_encrypt|g' mcbits/operations.c
 	sed -i 's|_keccakc1024||g' mcbits/operations.c
 	sed -i 's|salsa20_ref|salsa20|g' mcbits/operations.c
+	sed -i 's|salsa20|chacha20|g' mcbits/operations.c
 
 	wget https://bench.cr.yp.to/supercop/supercop-20180818.tar.xz
 	unxz < supercop-20180818.tar.xz | tar -xf -
@@ -38,10 +39,11 @@ all:
 			-Imcbits \
 			-I. \
 			libsodium/src/libsodium/randombytes/randombytes.c \
+			libsodium/src/libsodium/sodium/core.c \
 			libsodium/src/libsodium/sodium/utils.c \
 			$$(find libsodium/src/libsodium/crypto_core/salsa -type f -name "*.c" | tr "\n" " ") \
 			$$(find libsodium/src/libsodium/crypto_onetimeauth/poly1305 -type f -name "*.c" | tr "\n" " ") \
-			$$(find libsodium/src/libsodium/crypto_stream/salsa20 -type f -name "*.c" | tr "\n" " ") \
+			$$(find libsodium/src/libsodium/crypto_stream/chacha20 -type f -name "*.c" | tr "\n" " ") \
 			$$(find libsodium/src/libsodium/crypto_verify -type f -name "*.c" | tr "\n" " ") \
 			$$(ls mcbits/*.c) \
 			mceliece.c \
