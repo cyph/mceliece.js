@@ -96,7 +96,7 @@ all:
 	" >> dist/mceliece.tmp.js
 	cat post.js >> dist/mceliece.tmp.js
 
-	uglifyjs dist/mceliece.tmp.js -cmo dist/mceliece.js
+	terser dist/mceliece.tmp.js -cmo dist/mceliece.js
 
 	sed -i 's|use asm||g' dist/mceliece.js
 	sed -i 's|require(|eval("require")(|g' dist/mceliece.js
