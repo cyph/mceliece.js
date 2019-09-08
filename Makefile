@@ -72,14 +72,13 @@ all:
 
 	echo " \
 		var Module = {}; \
-		var _Module = Module; \
 		Module.ready = new Promise(function (resolve, reject) { \
-			var Module = _Module; \
+			var Module = {}; \
 			Module.onAbort = reject; \
 			Module.onRuntimeInitialized = function () { \
 				try { \
 					Module._mceliecejs_public_key_bytes(); \
-					resolve(); \
+					resolve(Module); \
 				} \
 				catch (err) { \
 					reject(err); \
@@ -89,12 +88,13 @@ all:
 	cat dist/mceliece.wasm.js >> dist/mceliece.tmp.js
 	echo " \
 		}).catch(function () { \
-			var Module = _Module; \
-			Module.onAbort = undefined; \
-			Module.onRuntimeInitialized = undefined; \
+			var Module = {}; \
 	" >> dist/mceliece.tmp.js
 	cat dist/mceliece.asm.js >> dist/mceliece.tmp.js
 	echo " \
+			return Module; \
+		}).then(function (m) { \
+			Object.keys(m).forEach(function (k) { Module[k] = m[k]; }); \
 		}); \
 	" >> dist/mceliece.tmp.js
 	cat post.js >> dist/mceliece.tmp.js
