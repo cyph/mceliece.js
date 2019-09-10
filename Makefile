@@ -92,7 +92,10 @@ all:
 	" >> dist/mceliece.tmp.js
 	cat dist/mceliece.asm.js >> dist/mceliece.tmp.js
 	echo " \
-			return Module; \
+			return new Promise(function (resolve, reject) { \
+				Module.onAbort = reject; \
+				Module.onRuntimeInitialized = function () { resolve(Module); }; \
+			}); \
 		}).then(function (m) { \
 			Object.keys(m).forEach(function (k) { Module[k] = m[k]; }); \
 		}); \
